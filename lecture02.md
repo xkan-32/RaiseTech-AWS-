@@ -9,10 +9,11 @@
 * Gitが使えるwebﾍﾞｰｽﾌﾟﾗｯﾄﾌｫｰﾑ
 * ﾘﾎﾟｼﾞﾄﾘ・・貯蔵庫
 * ﾌｫｰｸ・・他人のﾘﾓｰﾄﾘﾎﾟｼﾞﾄﾘを自分のﾘﾓｰﾄﾘﾎﾟｼﾞﾄﾘに複製
-* ｸﾛｰﾝ・・ﾘﾓｰﾄﾘﾎﾟｼﾞﾄﾘの内容をﾛｰｶﾙﾘﾎﾟｼﾞﾄﾘにｺﾋﾟｰ
+* ｸﾛｰﾝ・・ﾘﾓｰﾄﾘﾎﾟｼﾞﾄﾘの内容をﾛｰｶﾙﾘﾎﾟ
 
 ## Markdown
 * ↑こんな感じでできる
+
 
 
 ![good](https://1.bp.blogspot.com/-2MgKC2rxKEM/YU07cx98C-I/AAAAAAABfaA/3ezT0IdeCP43VHZH5fthbwc8Wfks1AzDwCNcBGAsYHQ/s894/medical_koutai_breakthrough_woman.png)
