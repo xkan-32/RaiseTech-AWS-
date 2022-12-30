@@ -110,11 +110,11 @@
             
                      ↓起動後のスクリーンショット↓
 
-![動作確認1](images/%E5%8B%95%E4%BD%9C%E7%A2%BA%E8%AA%8D1.png)
+![動作確認1](images/dousa1.png)
 
-![動作確認2](images/%E5%8B%95%E4%BD%9C%E7%A2%BA%E8%AA%8D2.png)
+![動作確認2](images/dousa2.png)
 
-![動作確認3](images/%E5%8B%95%E4%BD%9C%E7%A2%BA%E8%AA%8D3.png)
+![動作確認3](images/dousa3.png)
         
 
 -----
@@ -125,21 +125,21 @@
 
 - エラー１
 
-![ｴﾗｰ1](images/%EF%BD%B4%EF%BE%97%EF%BD%B01.png)
+![ｴﾗｰ1](images/error1.png)
 
 ↑databese.ymlに名前変更
 
 - エラー２
 
-![ｴﾗｰ2](images/%EF%BD%B4%EF%BE%97%EF%BD%B02-0.png)
+![ｴﾗｰ2](images/error2-0.png)
 
 ↑socketの場所確認後、変更　↓参考画像
 
-![socket検索](images/%EF%BD%B4%EF%BE%97%EF%BD%B02-1.png)
+![socket検索](images/error2-1.png)
 
 - エラー３
 
-![ｴﾗｰ3](images/%EF%BD%B4%EF%BE%97%EF%BD%B03.png)
+![ｴﾗｰ3](images/error3.png)
 
 ↑プリコンパイル実施
 
