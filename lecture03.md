@@ -125,7 +125,7 @@
 
 - エラー１
 
-![ｴﾗｰ1]()
+![ｴﾗｰ1](images/error1.png)
 
 ↑databese.ymlに名前変更
 
@@ -181,10 +181,14 @@
 
  - 動作確認時、サムネ画像が反映されない不具合あり
  　
-        →サムネ表示されない時の挙動をターミナルで確認、Imagemagickが必要とわかった。
 
-        ※[imagemagikのインストール](http://entame-life.xyz/2021/01/15/post-469/)
+        →サムネ表示されない時の挙動をターミナルで確認、Imagemagickが必要とわかった。
+        
+
+[imagemagikのインストール](http://entame-life.xyz/2021/01/15/post-469/)
+
         
         ↑インストールは上記参照
+        
         
 ![動作確認4](images/dousa4.png)
