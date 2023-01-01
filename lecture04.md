@@ -79,3 +79,4 @@
 
 ![lecture04-3](images/lecture04-3.png)
 
+![lecture04-4](images/lecture04-4.png)
