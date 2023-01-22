@@ -1,4 +1,5 @@
 # 第７回課題
+## 学んだサービスまとめ
 
 |サービス名|主なアイコン|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|サービス名|主なアイコン|
 |:---|:---:|---|:---|:---:|
@@ -7,6 +8,8 @@
 |3.[ACM(AWS Certificate Manager)](#acm)|![ACM](images/AWSCertificateManager.svg)||8.[AWS Shield](#aws-shield)|![AWS Shield](images/AWSShield.svg)|
 |4.[Inspector](#inspector)|![Inspector](images/Inspector.svg)||9.[IAM Access Analyzer](#iam-access-analyzer)|![IAM Access Analyzer](images/IAMAccessAnalyzer.svg)|
 |5.[Security Hub](#security-hub)|![Security Hub](images/SecurityHub.svg)||10.[GuardDuty](#guardduty)|![GuardDuty](images/GuardDuty.svg)
+
+----
 ## Amazon CodeGuru
 * CodeGuru ReviewerとCodeGuru Profilerがある
 * 上記のツールを活用することで、コードの品質を向上させ、アプリケーションのパフォーマンスを最適化できる
@@ -112,6 +115,7 @@
 ## セキュリティを考える
 * 第5回の課題で作成したインフラ構成図にセキュリティを追加する
 * 本来はコスト面も考え、**受容**することも大切だが、今回はモリモリつけてみる
+
 ![lecture07-5](images/lecture07-5.svg)
 
 ---
