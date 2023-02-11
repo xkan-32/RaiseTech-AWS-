@@ -1,0 +1,60 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: ALB sample 
+
+Parameters:
+  NameBase:
+    Description: this is base name.
+    Type: String
+    Default: sample01
+
+Resources:
+  TeradaALB:                       # ロードバランサーの設定
+    Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+    Properties:
+      Type: application
+      Name: !Sub ALB-${NameBase}
+      IpAddressType: ipv4
+      Scheme: internet-facing
+      Subnets:
+        - Fn::ImportValue: 
+            !Sub PublicSubnet1aoutputs-${NameBase}
+        - Fn::ImportValue: 
+            !Sub PublicSubnet1boutputs-${NameBase}
+      SecurityGroups:
+        - Fn::ImportValue:
+            !Sub SecurityGroup02outputs-${NameBase}
+      Tags:
+        - Key: Name
+          Value: !Sub ALB-${NameBase}
+  
+  TeradaTargetGroup:                 # ターゲットグループの設定
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    Properties:
+      Matcher:
+        HttpCode: 200
+      Name: !Sub TargetGroup-${NameBase}
+      Port: 80
+      Protocol: HTTP
+      ProtocolVersion: HTTP1
+      TargetType: instance
+      Targets: 
+        - Id: 
+            Fn::ImportValue: 
+              !Sub EC2Instanceoutputs-${NameBase}
+          Port: 80
+      VpcId: 
+        Fn::ImportValue: 
+          !Sub VPCoutputs-${NameBase}
+      Tags:
+        - Key: Name
+          Value: !Sub TargetGroup-${NameBase}
+
+  TeradaListenerHTTP:              # リスナーの設定
+    Type: AWS::ElasticLoadBalancingV2::Listener
+    Properties:
+      DefaultActions:
+        - Type: forward
+          TargetGroupArn: !Ref TeradaTargetGroup
+      LoadBalancerArn: !Ref TeradaALB
+      Port: 80
+      Protocol: HTTP

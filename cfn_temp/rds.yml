@@ -1,0 +1,64 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: RDS sample 
+
+Parameters:
+  NameBase:
+    Description: this is base name.
+    Type: String
+    Default: sample01
+  InstanceClass:
+    Default: db.t2.micro
+    Type: String
+  MysqlVession:
+    Type: String
+    Default: 8.0.28 
+  Username: 
+    Type: String 
+    Default: admin
+  UserPassword:
+    Type: String 
+    Default: 4Ggf3wd&
+  Storage: 
+    Type: String
+    Default: 20
+
+Resources:
+  TeradaDBSubnetGroup:              # サブネットグループの設定
+    Type: AWS::RDS::DBSubnetGroup
+    Properties:
+      DBSubnetGroupDescription: DBSubnetGroup sample
+      DBSubnetGroupName: !Sub DBSubnetGroup-${NameBase}
+      SubnetIds:
+        - Fn::ImportValue: 
+            !Sub PublicSubnet1aoutputs-${NameBase}
+        - Fn::ImportValue:
+            !Sub PublicSubnet1boutputs-${NameBase}
+      Tags:
+        - Key: Name
+          Value: !Sub DBSubnetGroup-${NameBase}
+
+  TeradaDatabases:              # データベースの設定
+    Type: AWS::RDS::DBInstance
+    Properties:
+      DBInstanceIdentifier: !Sub DBInstance-${NameBase}
+      DBInstanceClass: !Sub ${InstanceClass}
+      Engine: mysql
+      EngineVersion: !Sub ${MysqlVession}
+      MasterUsername: !Sub ${Username}
+      MasterUserPassword: !Sub ${UserPassword}
+      DBName: !Sub xkanterada${NameBase}
+      BackupRetentionPeriod: 0
+      MultiAZ: false
+      PubliclyAccessible: false
+      StorageType: gp2
+      AllocatedStorage: !Sub ${Storage}
+      StorageEncrypted: false
+      CopyTagsToSnapshot: false
+      DeleteAutomatedBackups: true
+      DBSubnetGroupName: !Ref TeradaDBSubnetGroup
+      VPCSecurityGroups: 
+        - Fn::ImportValue: 
+            !Sub SecurityGroup03outputs-${NameBase}
+      Tags: 
+        - Key: Name
+          Value: !Sub DBInstance-${NameBase}
