@@ -6,10 +6,10 @@ Parameters:
     Description: this is base name.
     Type: String
     Default: sample01
-  Region:
-    Description: Choose the region.
-    Type: String
-    Default: us-east-1
+  # Region:
+    # Description: Choose the region.
+    # Type: String
+    # Default: us-east-1
   InstanceType:
     Description: Choose the instance type.
     Type: String
