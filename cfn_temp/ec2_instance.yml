@@ -27,7 +27,7 @@ Resources:
   NewKeypair:                   # キーペアの設定
     Type: AWS::EC2::KeyPair
     Properties:
-      KeyName: KeyPair-${AWS::StackName}
+      KeyName: !Sub KeyPair-${AWS::StackName}
       Tags:
         - Key: Name
           Value: !Sub NewKeypair-${NameBase}
