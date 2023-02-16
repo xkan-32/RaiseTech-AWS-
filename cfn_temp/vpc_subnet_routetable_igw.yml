@@ -1,0 +1,168 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: vpc/subnet/routetable/igw sample 
+
+Parameters:
+  NameBase:
+    Description: this is base name.
+    Type: String
+    Default: sample01
+#  Region:
+#    Description: Choose the region.
+#    Type: String
+#    Default: us-east-1
+
+Resources:
+  TeradaVPC:                            #VPCの設定
+    Type: AWS::EC2::VPC
+    Properties: 
+      CidrBlock: 10.0.0.0/16
+      EnableDnsHostnames: true
+      EnableDnsSupport: true
+      InstanceTenancy: default
+      Tags: 
+        - Key: Name
+          Value: !Sub vpc-${NameBase}
+
+  TeradaPublicSubnet1a:               # パブリックサブネット1の設定
+    Type: AWS::EC2::Subnet
+    Properties:
+      CidrBlock: 10.0.0.0/20
+      AvailabilityZone: !Select
+        - 0
+        - Fn::GetAZs: !Ref 'AWS::Region'
+      MapPublicIpOnLaunch: true 
+      VpcId: !Ref TeradaVPC
+      Tags: 
+        - Key: Name
+          Value: !Sub publicsubnet1a-${NameBase}
+
+  TeradaPublicSubnet1b:              # パブリックサブネット2の設定
+    Type: AWS::EC2::Subnet
+    Properties:
+      CidrBlock: 10.0.16.0/20
+      AvailabilityZone: !Select
+        - 1
+        - Fn::GetAZs: !Ref 'AWS::Region'
+      MapPublicIpOnLaunch: true 
+      VpcId: !Ref TeradaVPC
+      Tags: 
+        - Key: Name
+          Value: !Sub publicsubnet1b-${NameBase}
+
+  TeradaPrivateSubnet1a:             # プライベートサブネット1の設定
+    Type: AWS::EC2::Subnet
+    Properties:
+      CidrBlock: 10.0.128.0/20
+      AvailabilityZone: !Select
+        - 0
+        - Fn::GetAZs: !Ref 'AWS::Region'
+      MapPublicIpOnLaunch: false
+      VpcId: !Ref TeradaVPC
+      Tags: 
+        - Key: Name
+          Value: !Sub privatesubnet1a-${NameBase}
+
+  TeradaPrivateSubnet1b:            # プライベートサブネット2の設定
+    Type: AWS::EC2::Subnet
+    Properties:
+      CidrBlock: 10.0.144.0/20
+      AvailabilityZone: !Select
+        - 1
+        - Fn::GetAZs: !Ref 'AWS::Region'
+      MapPublicIpOnLaunch: false
+      VpcId: !Ref TeradaVPC
+      Tags: 
+        - Key: Name
+          Value: !Sub privatesubnet1b-${NameBase}
+
+  TeradaInternetGateway:           # インターネットゲートウェイの設定
+    Type: AWS::EC2::InternetGateway
+    Properties:
+      Tags:
+        - Key: Name
+          Value: !Sub iGW-${NameBase}
+
+  AttachGateway:                  # VPCにIGWをアタッチ
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties: 
+      InternetGatewayId: !Ref TeradaInternetGateway
+      VpcId: !Ref TeradaVPC
+
+  PublicrouteTable:              # パブリック用のルートテーブル作成
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref TeradaVPC
+      Tags:
+        - Key: Name
+          Value: !Sub PublicRouteTable-${NameBase}
+
+  Publicroute:                  # パブリックルートテーブル用ルート
+    Type: AWS::EC2::Route
+    Properties: 
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId: !Ref TeradaInternetGateway
+      RouteTableId: !Ref PublicrouteTable
+
+  TeradaPublicSubnet1aRouteTableAssociation:            # ルートテーブルにサブネット関連付け
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId: !Ref PublicrouteTable
+      SubnetId: !Ref TeradaPublicSubnet1a
+
+  TeradaPublicSubnet1bRouteTableAssociation:           # ルートテーブルにサブネット関連付け
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId: !Ref PublicrouteTable
+      SubnetId: !Ref TeradaPublicSubnet1b
+
+  PrivaterouteTable:                                  # プライベートルートテーブル作成
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref TeradaVPC
+      Tags:
+        - Key: Name
+          Value: !Sub PrivateRouteTable-${NameBase}
+
+  TeradaPrivateSubnet1aRouteTableAssociation:          # ルートテーブルにサブネット関連付け
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId: !Ref PrivaterouteTable
+      SubnetId: !Ref TeradaPrivateSubnet1a
+
+  TeradaPrivateSubnet1bRouteTableAssociation:           # ルートテーブルにサブネット関連付け
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId: !Ref PrivaterouteTable
+      SubnetId: !Ref TeradaPrivateSubnet1b
+
+Outputs:
+  VPCoutputs:
+    Description: VPC output 
+    Value: !Ref TeradaVPC
+    Export:
+      Name: !Sub VPCoutputs-${NameBase}
+
+  PublicSubnet1aoutputs:
+    Description: publicSubnet1a output 
+    Value: !Ref TeradaPublicSubnet1a
+    Export:
+      Name: !Sub PublicSubnet1aoutputs-${NameBase}
+
+  PublicSubnet1boutputs:
+    Description: publicSubnet1b output 
+    Value: !Ref TeradaPublicSubnet1b
+    Export:
+      Name: !Sub PublicSubnet1boutputs-${NameBase}
+
+  PrivateSubnet1aoutputs:
+    Description: PrivateSubnet1a output 
+    Value: !Ref TeradaPrivateSubnet1a
+    Export:
+      Name: !Sub PrivateSubnet1aoutputs-${NameBase}
+
+  PrivateSubnet1boutputs:
+    Description: PrivateSubnet1b output 
+    Value: !Ref TeradaPrivateSubnet1b
+    Export:
+      Name: !Sub PrivateSubnet1boutputs-${NameBase}
+

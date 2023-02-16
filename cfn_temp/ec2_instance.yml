@@ -1,0 +1,67 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: ec2-instance sample 
+
+Parameters:
+  NameBase:
+    Description: this is base name.
+    Type: String
+    Default: sample01
+#  Region:
+#    Description: Choose the region.
+#    Type: String
+#    Default: us-east-1
+  InstanceType:
+    Description: Choose the instance type.
+    Type: String
+    Default: t2.micro
+  InstanceVolumes:
+    Description: Choose the volume.
+    Type: String 
+    Default: 16
+  LatestAmiId:
+    Description: No change the item
+    Type: AWS::SSM::Parameter::Value<String>
+    Default: /aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2
+
+Resources:
+  NewKeypair:                   # キーペアの設定
+    Type: AWS::EC2::KeyPair
+    Properties:
+      KeyName: !Sub KeyPair-${AWS::StackName}
+      Tags:
+        - Key: Name
+          Value: !Sub NewKeypair-${NameBase}
+
+  TeradaEC2Instance:              # インスタンスの設定
+    Type: AWS::EC2::Instance
+    Properties:
+      ImageId: !Sub ${LatestAmiId}
+      InstanceType: !Sub ${InstanceType}
+      KeyName: !Sub ${NewKeypair}
+      BlockDeviceMappings:
+        - DeviceName: /dev/xvda
+          Ebs:
+            VolumeType: gp2
+            VolumeSize: !Sub ${InstanceVolumes}
+            Encrypted: false
+      NetworkInterfaces:
+        - SubnetId: 
+            Fn::ImportValue: 
+              !Sub PublicSubnet1aoutputs-${NameBase}
+          GroupSet: 
+            - Fn::ImportValue: 
+                !Sub SecurityGroup01outputs-${NameBase}
+            - Fn::ImportValue: 
+                !Sub SecurityGroup03outputs-${NameBase}
+          AssociatePublicIpAddress: true
+          DeviceIndex : 0
+      Tags:
+        - Key: Name
+          Value: !Sub TeradaEC2Instance-${NameBase}
+
+Outputs:
+  EC2Instanceoutputs:
+    Description: EC2Instance output 
+    Value: !Ref TeradaEC2Instance
+    Export:
+      Name: !Sub EC2Instanceoutputs-${NameBase}

@@ -1,0 +1,87 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: SecurityGroup sample 
+
+Parameters:
+  NameBase:
+    Description: this is base name.
+    Type: String
+    Default: sample01
+
+Resources:
+  TeradaSecurityGroup01:             # セキュリティグループの設定
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupName: EC2Instance-SecurityGroup
+      GroupDescription: EC2 Instance SecurityGroup
+      VpcId: 
+        Fn::ImportValue:
+          !Sub VPCoutputs-${NameBase}
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: 443
+          ToPort: 443
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: 3306
+          ToPort: 3306
+          CidrIp: 0.0.0.0/0
+
+  TeradaSecurityGroup02:                      # セキュリティグループの設定
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupName: ALB-SecurityGroup
+      GroupDescription: ALB SecurityGroup
+      VpcId: 
+        Fn::ImportValue:
+          !Sub VPCoutputs-${NameBase}
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: 443
+          ToPort: 443
+          CidrIp: 0.0.0.0/0
+
+  TeradaSecurityGroup03:                # セキュリティグループの設定
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupName: RDS-SecurityGroup
+      GroupDescription: RDS SecurityGroup
+      VpcId: 
+        Fn::ImportValue:
+          !Sub VPCoutputs-${NameBase}
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 3306
+          ToPort: 3306
+          CidrIp: 0.0.0.0/0
+
+
+Outputs:
+  SecurityGroup01outputs:
+    Description: SecurityGroup01 output
+    Value: !Ref TeradaSecurityGroup01
+    Export:
+      Name: !Sub SecurityGroup01outputs-${NameBase}
+
+  SecurityGroup02outputs:
+    Description: SecurityGroup02 output
+    Value: !Ref TeradaSecurityGroup02
+    Export:
+      Name: !Sub SecurityGroup02outputs-${NameBase}
+
+  SecurityGroup03outputs:
+    Description: SecurityGroup03 output
+    Value: !Ref TeradaSecurityGroup03
+    Export:
+      Name: !Sub SecurityGroup03outputs-${NameBase}
