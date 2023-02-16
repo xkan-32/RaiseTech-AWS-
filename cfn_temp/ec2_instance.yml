@@ -6,10 +6,10 @@ Parameters:
     Description: this is base name.
     Type: String
     Default: sample01
-  Region:
-    Description: Choose the region.
-    Type: String
-    Default: us-east-1
+#  Region:
+#    Description: Choose the region.
+#    Type: String
+#    Default: us-east-1
   InstanceType:
     Description: Choose the instance type.
     Type: String
@@ -27,7 +27,7 @@ Resources:
   NewKeypair:                   # キーペアの設定
     Type: AWS::EC2::KeyPair
     Properties:
-      KeyName: KeyPair-${AWS::StackName}
+      KeyName: !Sub KeyPair-${AWS::StackName}
       Tags:
         - Key: Name
           Value: !Sub NewKeypair-${NameBase}
